@@ -18,9 +18,12 @@ h1 {
   box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
 }
 
-#heading {
+.box#heading {
   background-color: #A683E3;
   text-align: center;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  font-size: 30px;
 }
 
 .item {
@@ -34,7 +37,7 @@ h1 {
   border-bottom: 0;
 }
 
-input:checked+p {
+.completed, input:checked+p {
   text-decoration: line-through;
   text-decoration-color: #A683E3;
 }
