@@ -1,7 +1,7 @@
 <%inherit file="common.mako"/>
 
 <div class="box" id="heading">
-
+${listName}
 </div>
 
 <div class="box">

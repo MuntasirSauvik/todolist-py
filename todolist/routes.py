@@ -8,5 +8,5 @@ def includeme(config):
     config.add_route('about', '/about')
     config.add_route('delete', '/delete')
     config.add_route('add_item', '/addItem')
-    config.add_route('custom_list_name', '/{customListName}')
 
+    config.add_route('list_name', '/{listName}')
