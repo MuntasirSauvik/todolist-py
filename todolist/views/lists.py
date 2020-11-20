@@ -41,11 +41,11 @@ def mark_complete(request):
     return HTTPFound(location=request.route_url('home'))
 
 
-@view_config(route_name='delete')
-def delete(request):
-    item_id = request.params['itemId']
-    completed = request.params['completed']
-    item = request.dbsession.query(models.Item).filter_by(id=item_id).one()
-    item.completed = bool(completed)
-    request.dbsession.flush()
-    return HTTPFound(location=request.route_url('home'))
+# @view_config(route_name='delete')
+# def delete(request):
+#     item_id = request.params['itemId']
+#     completed = request.params['completed']
+#     item = request.dbsession.query(models.Item).filter_by(id=item_id).one()
+#     item.completed = bool(completed)
+#     request.dbsession.flush()
+#     return HTTPFound(location=request.route_url('home'))
