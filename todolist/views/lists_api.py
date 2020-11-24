@@ -7,8 +7,54 @@ import transaction
 
 from .. import models
 
+def serialize_list(list_obj):
+    obj_serialized = {'id': list_obj.id,
+                      'name': list_obj.name,
+                      'items': []}
 
-@view_config(route_name='add_item')
+    for item in list_obj.items:
+        obj_serialized['items'].append({
+            'id': item.id,
+            'item_text': item.item_text,
+            'completed': item.completed
+        })
+
+    return obj_serialized
+
+@view_config(route_name='lists.get', renderer='json')
+def lists_get(request):
+
+    # example = {'id': 0,
+    #            'name': 'example list',
+    #            'items': [
+    #                {'id': 1,
+    #                 'item_text': 'example text',
+    #                 'completed': False}
+    #            ]}
+    list_name = request.matchdict['list_name']
+    normalizeName = list_name.lower()
+    obj = request.dbsession.query(models.List).filter_by(name=normalizeName).scalar()
+
+    return {'result': True,
+            'object': serialize_list(obj)}
+
+
+@view_config(route_name='lists.purge_completed', renderer='json')
+def lists_purge_completed(request):
+    pass
+
+
+@view_config(route_name='lists.items.add', renderer='json')
+def lists_items_add(reqeust):
+    pass
+
+
+@view_config(route_name='lists.items.mark_complete', renderer='json')
+def lists_items_mark_complete(request):
+    pass
+
+
+#@view_config(route_name='add_item')
 def add_item(request):
     listName = request.params['listName']
     normalizeName = listName.lower()
@@ -23,7 +69,7 @@ def add_item(request):
     return HTTPFound(location=request.route_url('list_name', listName=listName))
 
 
-@view_config(route_name='list_name')
+#@view_config(route_name='list_name')
 def list_name(request):
     listName = request.matchdict['listName']
     normalizeName = listName.lower()
@@ -59,7 +105,7 @@ def list_name(request):
     return render_to_response("todolist:templates/list.mako", data, request=request)
 
 
-@view_config(route_name='mark_complete')
+#@view_config(route_name='mark_complete')
 def mark_complete(request):
     listName = request.params['listName']
     item_id = request.params['itemId']
@@ -70,7 +116,7 @@ def mark_complete(request):
     return HTTPFound(location=request.route_url('list_name', listName=listName))
 
 
-@view_config(route_name='delete')
+#@view_config(route_name='delete')
 def delete(request):
     listName = request.params['listName']
     items = request.dbsession.query(models.Item).filter_by(completed=True).all()
