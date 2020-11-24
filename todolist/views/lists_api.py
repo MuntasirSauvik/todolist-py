@@ -38,7 +38,23 @@ def lists_get(request):
 
 @view_config(route_name='lists.purge_completed', renderer='json')
 def lists_purge_completed(request):
-    pass
+    list_name = request.matchdict['list_name']
+    normalizeName = list_name.lower()
+    obj = request.dbsession.query(models.List).filter_by(name=normalizeName).scalar()
+    if obj is not None:
+        items = request.dbsession.query(models.Item).filter_by(list_id=obj.id).filter_by(completed=True).all()
+        for i in items:
+            request.dbsession.delete(i)
+        request.dbsession.flush()
+        response_data = {'result': True,
+                         'object': serialize_list(obj)}
+        return response_data
+    else:
+        response_data = {'result': False,
+                         'message': 'List not found'}
+        response = render_to_response('json', response_data, request=request)
+        response.status_int = 404
+        return response
 
 
 @view_config(route_name='lists.items.add', renderer='json')
@@ -150,7 +166,9 @@ def mark_complete(request):
 # @view_config(route_name='delete')
 def delete(request):
     listName = request.params['listName']
-    items = request.dbsession.query(models.Item).filter_by(completed=True).all()
+    normalizeName = listName.lower()
+    foundList = request.dbsession.query(models.List).filter_by(name=normalizeName).scalar()
+    items = request.dbsession.query(models.Item).filter_by(list_id=foundList.id).filter_by(completed=True).all()
     for i in items:
         request.dbsession.delete(i)
     request.dbsession.flush()
