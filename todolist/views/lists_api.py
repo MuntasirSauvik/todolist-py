@@ -7,30 +7,27 @@ import transaction
 
 from .. import models
 
+
 def serialize_list(list_obj):
     obj_serialized = {'id': list_obj.id,
                       'name': list_obj.name,
                       'items': []}
 
     for item in list_obj.items:
-        obj_serialized['items'].append({
-            'id': item.id,
-            'item_text': item.item_text,
-            'completed': item.completed
-        })
+        obj_serialized['items'].append(serialize_item(item))
 
     return obj_serialized
 
+
+def serialize_item(item_obj):
+    item_obj_serialized = {'id': item_obj.id,
+                           'item_text': item_obj.item_text,
+                           'completed': item_obj.completed}
+    return item_obj_serialized
+
+
 @view_config(route_name='lists.get', renderer='json')
 def lists_get(request):
-
-    # example = {'id': 0,
-    #            'name': 'example list',
-    #            'items': [
-    #                {'id': 1,
-    #                 'item_text': 'example text',
-    #                 'completed': False}
-    #            ]}
     list_name = request.matchdict['list_name']
     normalizeName = list_name.lower()
     obj = request.dbsession.query(models.List).filter_by(name=normalizeName).scalar()
@@ -51,10 +48,26 @@ def lists_items_add(reqeust):
 
 @view_config(route_name='lists.items.mark_complete', renderer='json')
 def lists_items_mark_complete(request):
-    pass
+    listName = request.matchdict['list_name']
+    item_id = request.matchdict['item_id']
+    completed = request.params.get('completed') == '1'
+    item = request.dbsession.query(models.Item).filter_by(id=item_id).scalar()
+    if item is not None:
+        item.completed = completed
+        request.dbsession.flush()
+        response_data = {'result': True,
+                         'object': serialize_item(item)}
+        return response_data
+    else:
+        response_data = {'result': False,
+                         'message': 'Item not found'}
+        response = render_to_response('json', response_data, request=request)
+        response.status_int = 404
+        return response
 
 
-#@view_config(route_name='add_item')
+
+# @view_config(route_name='add_item')
 def add_item(request):
     listName = request.params['listName']
     normalizeName = listName.lower()
@@ -69,7 +82,7 @@ def add_item(request):
     return HTTPFound(location=request.route_url('list_name', listName=listName))
 
 
-#@view_config(route_name='list_name')
+# @view_config(route_name='list_name')
 def list_name(request):
     listName = request.matchdict['listName']
     normalizeName = listName.lower()
@@ -77,8 +90,8 @@ def list_name(request):
     foundList = request.dbsession.query(models.List).filter_by(name=normalizeName).scalar()
     if foundList is not None:
         data = {
-                    "listName": listName.capitalize(),
-                    "res": request.dbsession.query(models.Item).filter_by(list_id=foundList.id).all()
+            "listName": listName.capitalize(),
+            "res": request.dbsession.query(models.Item).filter_by(list_id=foundList.id).all()
         }
     else:
         new_list = models.List()
@@ -99,13 +112,13 @@ def list_name(request):
         request.dbsession.add(new_item3)
         request.dbsession.flush()
         data = {
-                   "listName": listName,
-                   "res": request.dbsession.query(models.Item).filter_by(list_id=new_list.id).all()
+            "listName": listName,
+            "res": request.dbsession.query(models.Item).filter_by(list_id=new_list.id).all()
         }
     return render_to_response("todolist:templates/list.mako", data, request=request)
 
 
-#@view_config(route_name='mark_complete')
+# @view_config(route_name='mark_complete')
 def mark_complete(request):
     listName = request.params['listName']
     item_id = request.params['itemId']
@@ -116,7 +129,7 @@ def mark_complete(request):
     return HTTPFound(location=request.route_url('list_name', listName=listName))
 
 
-#@view_config(route_name='delete')
+# @view_config(route_name='delete')
 def delete(request):
     listName = request.params['listName']
     items = request.dbsession.query(models.Item).filter_by(completed=True).all()
