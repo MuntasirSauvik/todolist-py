@@ -42,8 +42,26 @@ def lists_purge_completed(request):
 
 
 @view_config(route_name='lists.items.add', renderer='json')
-def lists_items_add(reqeust):
-    pass
+def lists_items_add(request):
+    listName = request.matchdict['list_name']
+    normalizeName = listName.lower()
+    obj = request.dbsession.query(models.List).filter_by(name=normalizeName).scalar()
+    if obj is not None:
+        item = request.params.get('newItem')
+        new_item = models.Item()
+        new_item.item_text = item
+        new_item.list_id = obj.id
+        request.dbsession.add(new_item)
+        request.dbsession.flush()
+        response_data = {'result': True,
+                         'object': serialize_list(obj)}
+        return response_data
+    else:
+        response_data = {'result': False,
+                         'message': 'List not found'}
+        response = render_to_response('json', response_data, request=request)
+        response.status_int = 404
+        return response
 
 
 @view_config(route_name='lists.items.mark_complete', renderer='json')
