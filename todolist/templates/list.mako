@@ -15,14 +15,17 @@
             <span>${i.completed and 'completed' or ''}</span>
         </p>
         <input type="hidden" name="itemId" value="${i.id}"/>
+        <input type="hidden" name="listName" value="${listName}"/>
       </form>
     % endfor
   <form class="item" action="/addItem" method="post">
     <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
     <button class="btn1" type="submit" name="list" >+</button>
+    <input type="hidden" name="listName" value="${listName}"/>
   </form>
 
   <form action="/delete" method="post">
     <button class="btn2" type="submit" >Clear Marked</button>
+    <input type="hidden" name="listName" value="${listName}"/>
   </form>
 </div>
