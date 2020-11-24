@@ -73,7 +73,9 @@ def mark_complete(request):
 @view_config(route_name='delete')
 def delete(request):
     listName = request.params['listName']
-    items = request.dbsession.query(models.Item).filter_by(completed=True).all()
+    normalizeName = listName.lower()
+    foundList = request.dbsession.query(models.List).filter_by(name=normalizeName).scalar()
+    items = request.dbsession.query(models.Item).filter_by(list_id=foundList.id).filter_by(completed=True).all()
     for i in items:
         request.dbsession.delete(i)
     request.dbsession.flush()
