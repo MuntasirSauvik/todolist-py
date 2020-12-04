@@ -22,3 +22,7 @@ test
 venv/
 todolist.sqlite
 .idea
+node_modules/
+todolist/client-src/app/lib/
+tmp
+.idea

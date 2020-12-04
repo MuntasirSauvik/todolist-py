@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="todolistApp">
+
+<head>
+  <meta charset="utf-8">
+  <title>To Do List AngularJS</title>
+  <link rel="stylesheet" href="app.css" />
+  <script src="lib/angular/angular.js"></script>
+  <script src="app.js"></script>
+</head>
+
+<body ng-controller="TodoListController">
+  <div class="box">
+    <!-- <pre>
+      {{listItems|json}}
+    </pre> -->
+    <div class="box" id="heading">
+      {{listItems.name}}
+    </div>
+      <ul ng-repeat="item in listItems.items">
+            <span ng-if=item.completed>
+              <p class='completed'>
+                <input type="checkbox" name="completed">
+                {{item.item_text}}
+                Completed
+              </p>
+            </span>
+            <span ng-if=!item.completed>
+              <p>
+                <input type="checkbox" name="completed">
+                {{item.item_text}}
+              </p>
+            </span>
+
+          <!-- <input type="hidden" name="itemId" value="${i.id}" />
+          <input type="hidden" name="listName" value="${listName}" /> -->
+      </ul>
+
+
+    <form class="item" ng-submit="addItem()">
+      <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
+      <button class="btn1" type="submit" name="list">+</button>
+      <input type="hidden" name="listName" value="${listName}" />
+    </form>
+
+    <form action="/delete" method="post">
+      <button class="btn2" type="submit">Clear Marked</button>
+      <input type="hidden" name="listName" value="${listName}" />
+    </form>
+  </div>
+
+
+
+
+</body>
+
+</html>
