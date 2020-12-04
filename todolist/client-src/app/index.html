@@ -6,51 +6,23 @@
   <title>To Do List AngularJS</title>
   <link rel="stylesheet" href="app.css" />
   <script src="lib/angular/angular.js"></script>
+  <script src="lib/angular-route/angular-route.js"></script>
   <script src="app.js"></script>
+  <script src="modules/app/app-controller.js"></script>
+  <script src="modules/todoList/todo-list-controller.js"></script>
 </head>
 
-<body ng-controller="TodoListController">
-  <div class="box">
-    <!-- <pre>
-      {{listItems|json}}
-    </pre> -->
-    <div class="box" id="heading">
-      {{listItems.name}}
+
+<body ng-controller="AppController">
+    <pre>$location.path() = {{$location.path()}}</pre>
+    <pre>$route.current.templateUrl = {{$route.current.templateUrl}}</pre>
+    <pre>$route.current.params = {{$route.current.params}}</pre>
+    <pre>$route.current.scope.name = {{$route.current.scope.name}}</pre>
+    <pre>$routeParams = {{$routeParams}}</pre>
+
+    <div ng-view>
+
     </div>
-      <ul ng-repeat="item in listItems.items">
-            <span ng-if=item.completed>
-              <p class='completed'>
-                <input type="checkbox" name="completed">
-                {{item.item_text}}
-                Completed
-              </p>
-            </span>
-            <span ng-if=!item.completed>
-              <p>
-                <input type="checkbox" name="completed">
-                {{item.item_text}}
-              </p>
-            </span>
-
-          <!-- <input type="hidden" name="itemId" value="${i.id}" />
-          <input type="hidden" name="listName" value="${listName}" /> -->
-      </ul>
-
-
-    <form class="item" ng-submit="addItem()">
-      <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
-      <button class="btn1" type="submit" name="list">+</button>
-      <input type="hidden" name="listName" value="${listName}" />
-    </form>
-
-    <form action="/delete" method="post">
-      <button class="btn2" type="submit">Clear Marked</button>
-      <input type="hidden" name="listName" value="${listName}" />
-    </form>
-  </div>
-
-
-
 
 </body>
 
