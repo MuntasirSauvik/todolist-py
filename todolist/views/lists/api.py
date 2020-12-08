@@ -31,7 +31,7 @@ def lists_purge_completed(request):
             request.dbsession.delete(i)
         request.dbsession.flush()
         response_data = {'result': True,
-                         'object': serialize_list(obj)}
+                         'object': serialize_list(list_obj)}
         return response_data
     else:
         response_data = {'result': False,

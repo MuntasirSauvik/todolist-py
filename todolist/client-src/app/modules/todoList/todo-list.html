@@ -5,24 +5,23 @@
   <div class="box" id="heading">
     {{items.name}}
   </div>
-    <ul ng-repeat="item in items.items">
-          <span>
-            <p ng-class="{completed: item.completed}">
-              <input type="checkbox" ng-model="item.completed" ng-click="toggleComplete(item)">
-              {{item.item_text}}
-              <span ng-if="item.completed">Completed</span>
-            </p>
-          </span>
-    </ul>
+  <ul ng-repeat="item in items.items">
+    <span>
+      <p ng-class="{completed: item.completed}">
+        <input type="checkbox" ng-model="item.completed" ng-click="toggleComplete(item)">
+        {{item.item_text}}
+        <span ng-if="item.completed">Completed</span>
+      </p>
+    </span>
+  </ul>
 
-    <form class="item" ng-submit="addItem()">
-      <input type="text" name="newItem" ng-model="newItem" placeholder="New Item" autocomplete="off">
-      <input class="btn1" type="submit" name="list"  id="submit" value="+" />
-    </form>
+  <form class="item" ng-submit="addItem()">
+    <input type="text" name="newItem" ng-model="newItem" placeholder="New Item" autocomplete="off">
+    <input class="btn1" type="submit" name="list" id="submit" value="+" />
+  </form>
 
 
-  <form action="/delete" method="post">
+  <form ng-submit="delete()">
     <button class="btn2" type="submit">Clear Marked</button>
-    <input type="hidden" name="listName" value="${listName}" />
   </form>
 </div>

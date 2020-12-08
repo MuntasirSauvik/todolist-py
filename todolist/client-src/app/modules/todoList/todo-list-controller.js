@@ -3,7 +3,7 @@
 // Define the `TodoListController` controller on the `todolistApp` module
 angular.module('todolistApp').controller('TodoListController', ['$scope', '$http', '$routeParams', '$httpParamSerializerJQLike', function TodoListController($scope, $http, $routeParams, $httpParamSerializerJQLike) {
   var todoList = $routeParams.listName || 'Home'; // fetch this from angular route
-  $scope.newItemText = 'hello';
+  $scope.newItem = 'Default new item text';
 
   //`${baseUrl}/api/lists/get/${todoList}`
 
@@ -49,6 +49,18 @@ angular.module('todolistApp').controller('TodoListController', ['$scope', '$http
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     })
+    .then(function (response) {
+        $scope.listItems(todoList);
+    }, function (response) {
+      console.log("Error: addItem failed.");
+    });
+  }
+
+  $scope.delete = function() {
+    console.log('delete button clicked');
+    var url = baseUrl + '/api/lists/' + todoList + '/purge_completed';
+
+    $http.post(url)
     .then(function (response) {
         $scope.listItems(todoList);
     }, function (response) {
