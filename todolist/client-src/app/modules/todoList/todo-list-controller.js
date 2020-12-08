@@ -40,6 +40,20 @@ angular.module('todolistApp').controller('TodoListController', ['$scope', '$http
 
   $scope.addItem = function() {
     console.log('addItem called');
+    console.log('item clicked', $scope.newItem);
+    var url = baseUrl + '/api/lists/' + todoList + '/items/add';
+    var params = {newItem: $scope.newItem};
+    var encodedData = $httpParamSerializerJQLike(params);
+    $http.post(url, encodedData, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+    .then(function (response) {
+        $scope.listItems(todoList);
+    }, function (response) {
+      console.log("Error: addItem failed.");
+    });
   }
 
 }]);
