@@ -3,27 +3,23 @@
     {{listItems|json}}
   </pre> -->
   <div class="box" id="heading">
-    {{listItems.name}}
+    {{items.name}}
   </div>
     <ul ng-repeat="item in items.items">
           <span>
             <p ng-class="{completed: item.completed}">
-              <input type="checkbox" name="completed" ng-click="toggleComplete(item)">
+              <input type="checkbox" ng-model="item.completed" ng-click="toggleComplete(item)">
               {{item.item_text}}
               <span ng-if="item.completed">Completed</span>
             </p>
           </span>
-
-        <!-- <input type="hidden" name="itemId" value="${i.id}" />
-        <input type="hidden" name="listName" value="${listName}" /> -->
     </ul>
 
+    <form class="item" ng-submit="addItem()">
+      <input type="text" name="newItem" ng-model="newItemText" placeholder="New Item" autocomplete="off" >
+      <input class="btn1" type="submit" name="list"  id="submit" value="+" />
+    </form>
 
-  <form class="item" ng-submit="addItem()">
-    <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
-    <button class="btn1" type="submit" name="list">+</button>
-    <input type="hidden" name="listName" value="${listName}" />
-  </form>
 
   <form action="/delete" method="post">
     <button class="btn2" type="submit">Clear Marked</button>

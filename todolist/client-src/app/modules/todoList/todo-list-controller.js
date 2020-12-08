@@ -1,8 +1,9 @@
 'use strict'
 
 // Define the `TodoListController` controller on the `todolistApp` module
-angular.module('todolistApp').controller('TodoListController', function TodoListController($scope, $http, $routeParams) {
+angular.module('todolistApp').controller('TodoListController', ['$scope', '$http', '$routeParams', '$httpParamSerializerJQLike', function TodoListController($scope, $http, $routeParams, $httpParamSerializerJQLike) {
   var todoList = $routeParams.listName || 'Home'; // fetch this from angular route
+  $scope.newItemText = 'hello';
 
   //`${baseUrl}/api/lists/get/${todoList}`
 
@@ -21,14 +22,24 @@ angular.module('todolistApp').controller('TodoListController', function TodoList
   $scope.toggleComplete = function(item) {
     console.log('item clicked', item);
     item.completed = !item.completed;
-    // send update to server
-    //$scope.listItems(todoList);
+    var url = baseUrl + '/api/lists/' + todoList + '/items/' + item.id + '/mark_complete';
+
+    var params = {completed: item.completed ? '1' : '0'};
+    var encodedData = $httpParamSerializerJQLike(params);
+    $http.post(url, encodedData, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+    .then(function (response) {
+        $scope.listItems(todoList);
+    }, function (response) {
+      console.log("Error: toggleComplete failed.");
+    });
   }
 
   $scope.addItem = function() {
-    // do item adding
-
-    $scope.listItems(todoList);
+    console.log('addItem called');
   }
 
-});
+}]);
