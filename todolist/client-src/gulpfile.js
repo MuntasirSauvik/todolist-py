@@ -10,7 +10,9 @@ var jsFiles = ['app/modules/**/*.js', 'app/*.js']
     jsDest = 'static/js';
 
 gulp.task('templates', function(done) {
-  done();
+  return gulp.src('app/app.html')
+      .pipe(rename('app.html'))
+      .pipe(gulp.dest('templates/'))
 });
 
 gulp.task('css', function(done) {
