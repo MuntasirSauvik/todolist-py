@@ -8,7 +8,7 @@ from . import (
 )
 
 
-@view_config(route_name='add_item')
+#@view_config(route_name='add_item')
 def add_item(request):
     list_name = request.params['listName']
     found_list = find_list_obj(list_name, request)
@@ -22,7 +22,7 @@ def add_item(request):
     return HTTPFound(location=request.route_url('list_name', listName=list_name))
 
 
-@view_config(route_name='list_name')
+#@view_config(route_name='list_name')
 def list_name(request):
     list_name = request.matchdict['listName']
     found_list = find_list_obj(list_name, request)
@@ -40,7 +40,7 @@ def list_name(request):
     return render_to_response("todolist:templates/list.mako", data, request=request)
 
 
-@view_config(route_name='mark_complete')
+#@view_config(route_name='mark_complete')
 def mark_complete(request):
     item_id = request.params['itemId']
     completed = request.params.get('completed') is not None
@@ -50,7 +50,7 @@ def mark_complete(request):
     return HTTPFound(location=request.route_url('list_name', listName=request.params['listName']))
 
 
-@view_config(route_name='delete')
+#@view_config(route_name='delete')
 def delete(request):
     list_name = request.params['listName']
     normalize_name = list_name.lower()

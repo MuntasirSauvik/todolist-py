@@ -17,6 +17,7 @@
     "angular-mocks": "1.8.x",
     "cpx": "^1.5.0",
     "gulp": "^4.0.2",
+    "gulp-angular-templatecache": "^3.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-rename": "^2.0.0",
     "gulp-sass": "^4.1.0",

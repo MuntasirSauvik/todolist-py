@@ -14,4 +14,4 @@ from .. import models
 
 @view_config(route_name='home', renderer='../templates/app.mako')
 def my_view(request):
-    pass
+    return {}

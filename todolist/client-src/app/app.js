@@ -1,3 +1,7 @@
 'use strict';
 
-angular.module('todolistApp', ['ngRoute']);
+var frameworkModules = ['ngRoute'];
+var appModules = ['templates'];
+
+var allModules = [].concat(frameworkModules, appModules);
+angular.module('todolistApp', allModules);
