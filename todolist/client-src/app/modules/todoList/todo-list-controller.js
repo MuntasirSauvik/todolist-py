@@ -9,7 +9,7 @@ angular.module('todolistApp').controller('TodoListController', ['$scope', '$http
 
   $scope.listItems = function(listName) {
     $http.get(baseUrl + '/api/lists/get/' + listName)
-    .then(function(response) {
+    .then((response) => {
       if(response.data.result) {
         $scope.items = response.data.object;
       } else {
