@@ -4,14 +4,16 @@
 <head>
   <meta charset="utf-8">
   <title>To Do List AngularJS</title>
-  <link rel="stylesheet" href="app.css" />
+  <!-- Legacy code -->
+  <!-- <link rel="stylesheet" href="app.css" />
   <script src="lib/angular/angular.js"></script>
   <script src="lib/angular-route/angular-route.js"></script>
   <script src="app.js"></script>
   <script src="modules/app/app-controller.js"></script>
-  <script src="modules/todoList/todo-list-controller.js"></script>
+  <script src="modules/todoList/todo-list-controller.js"></script> -->
+  <link rel="stylesheet" href="${request.static_url('todolist:static/css/app.min.css')}" />
+  <script src="${request.static_url('todolist:static/js/scripts.min.js')}"></script>
 </head>
-
 
 <body ng-controller="AppController">
     <!-- <pre>$location.path() = {{$location.path()}}</pre>
